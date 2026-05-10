@@ -46,8 +46,6 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "经侦工作日志登记系统",
-      "installDir": "D:\\Program Files\\ECID",
-      "installDirIncludedFileDir": true,
       "license": "LICENSE.txt",
       "runAfterFinish": true,
       "language": "2052",
