@@ -17,7 +17,8 @@ out/
 .DS_Store
 Thumbs.db
 
-# 日志
+# 参考文档（已合入代码，不上传）
+*.md
 *.log
 npm-debug.log*
 

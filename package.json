@@ -36,7 +36,6 @@
           "arch": ["x64"]
         }
       ],
-      "icon": "assets/icons/app.ico",
       "artifactName": "${productName}_V${version}_Setup.${ext}",
       "legalTrademarks": "© 版权所有 经侦工作日志登记系统 | 制作人：陈洪涛"
     },

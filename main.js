@@ -23,7 +23,6 @@ function createWindow() {
         minWidth: 1024,
         minHeight: 700,
         title: '经侦工作日志登记系统 V1.2',
-        icon: path.join(__dirname, 'assets', 'icons', 'app.ico'),
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
