@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>经侦工作日志登记系统 V1.2</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="assets/lib/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- 登录界面 -->
+    <div id="loginContainer" class="login-container" style="display:none;">
+        <div class="login-card">
+            <img src="ECID.png" class="login-logo" alt="ECID" id="loginLogo">
+            <div class="login-title-cn">经侦工作日志登记系统</div>
+            <div class="login-title-en">Economic Investigation Work Log Registration System</div>
+            <div class="login-body" id="loginBody">
+                <!-- 由 Login.js 渲染 -->
+            </div>
+            <div class="login-register" id="loginRegister">
+                <a id="loginRegisterLink">注册用户</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主应用 -->
+    <div id="appContainer" class="app-container" style="display:none;">
+        <!-- 菜单栏 -->
+        <div class="menu-bar" id="menuBar">
+            <div class="menu-item" data-menu="file">
+                <span>文件</span><span class="arrow">&#9662;</span>
+                <div class="menu-dropdown">
+                    <div class="menu-dropdown-item" data-action="newCase"><span class="icon">&#10010;</span>新建案件</div>
+                    <div class="menu-dropdown-item" data-action="cases"><span class="icon">&#128220;</span>案件管理</div>
+                    <div class="menu-dropdown-item" data-action="records"><span class="icon">&#128203;</span>工作记录</div>
+                    <div class="menu-dropdown-item" data-action="progress"><span class="icon">&#128200;</span>进度跟踪</div>
+                    <div class="menu-divider"></div>
+                    <div class="menu-dropdown-item" data-action="logout"><span class="icon">&#10140;</span>退出登录</div>
+                    <div class="menu-dropdown-item" data-action="close"><span class="icon">&#10006;</span>关闭软件</div>
+                </div>
+            </div>
+            <div class="menu-item" data-menu="data">
+                <span>数据</span><span class="arrow">&#9662;</span>
+                <div class="menu-dropdown">
+                    <div class="menu-dropdown-item" data-action="backup"><span class="icon">&#128190;</span>一键备份</div>
+                    <div class="menu-dropdown-item" data-action="restore"><span class="icon">&#128191;</span>恢复数据</div>
+                    <div class="menu-dropdown-item" data-action="migrate"><span class="icon">&#128230;</span>案件迁移</div>
+                    <div class="menu-dropdown-item" data-action="cleanup"><span class="icon">&#128465;</span>数据清理</div>
+                </div>
+            </div>
+            <div class="menu-item" data-menu="about">
+                <span>关于</span><span class="arrow">&#9662;</span>
+                <div class="menu-dropdown">
+                    <div class="menu-dropdown-item" data-action="help"><span class="icon">&#128161;</span>帮助中心</div>
+                    <div class="menu-dropdown-item" data-action="copyright"><span class="icon">&#169;</span>版权信息</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部状态栏 -->
+        <header class="top-bar">
+            <div class="logo">
+                <span class="badge-icon"><img src="ECID.png" alt="ECID"></span>
+                <span>经侦工作日志登记系统 V1.2</span>
+            </div>
+            <div class="top-info">
+                <div class="info-item">
+                    <span>&#128101;</span>
+                    <span id="userName"></span>
+                    <span id="userBadge" style="background:rgba(255,255,255,0.15);padding:0 6px;border-radius:3px;"></span>
+                </div>
+                <div class="info-item">
+                    <span>&#128205;</span>
+                    <span id="userDept"></span>
+                </div>
+                <div class="info-item">
+                    <span>&#128203;</span>
+                    <span>在办案件：<strong id="totalCases">0</strong></span>
+                </div>
+                <div class="info-item">
+                    <span>&#128221;</span>
+                    <span>今日记录：<strong id="todayRecords">0</strong></span>
+                </div>
+                <div class="info-item">
+                    <span>&#9888;</span>
+                    <span>超期事项：<strong id="overdueCount" class="badge" style="display:none;">0</strong></span>
+                </div>
+            </div>
+            <div class="top-actions">
+                <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:white;border:none;" onclick="toggleDarkMode()" title="切换主题">&#127769;</button>
+                <button class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:white;border:none;" onclick="logout()" title="退出登录">&#10140; 退出</button>
+            </div>
+        </header>
+
+        <!-- 主体 -->
+        <div class="main-wrapper">
+            <!-- 左侧导航 -->
+            <nav class="sidebar">
+                <div class="nav-section">
+                    <div class="section-title">核心功能</div>
+                    <div class="nav-item active" data-route="dashboard">
+                        <span class="nav-icon">&#127968;</span> 工作台
+                    </div>
+                    <div class="nav-item" data-route="cases">
+                        <span class="nav-icon">&#128220;</span> 案件管理
+                    </div>
+                    <div class="nav-item" data-route="records">
+                        <span class="nav-icon">&#128203;</span> 工作记录
+                    </div>
+                    <div class="nav-item" data-route="progress">
+                        <span class="nav-icon">&#128200;</span> 案件进度
+                    </div>
+                </div>
+                <div class="nav-section">
+                    <div class="section-title">报表与数据</div>
+                    <div class="nav-item" data-route="reports">
+                        <span class="nav-icon">&#128196;</span> 报告生成
+                    </div>
+                    <div class="nav-item" data-route="data">
+                        <span class="nav-icon">&#128427;</span> 数据管理
+                    </div>
+                </div>
+                <div class="nav-section">
+                    <div class="section-title">系统</div>
+                    <div class="nav-item" data-route="settings">
+                        <span class="nav-icon">&#9881;</span> 系统设置
+                    </div>
+                </div>
+            </nav>
+
+            <!-- 中间工作区 -->
+            <div class="content-area">
+                <div class="content-header">
+                    <h2 id="pageTitle">工作台</h2>
+                    <div id="contentActions"></div>
+                </div>
+                <div class="content-body" id="contentBody">
+                    <!-- 动态渲染 -->
+                </div>
+            </div>
+
+            <!-- 右侧统计 -->
+            <aside class="stats-panel" id="statsPanel">
+                <!-- 由 updateStatsPanel 动态渲染 -->
+            </aside>
+        </div>
+
+        <!-- 底部状态栏 -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="statusPage">已就绪</span>
+            </div>
+            <div class="status-right">
+                <span id="statusUser"></span>
+                <span id="statusClock"></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils/helpers.js"></script>
+    <script src="js/utils/crimeTypes.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/views/Login.js"></script>
+    <script src="js/views/Dashboard.js"></script>
+    <script src="js/views/CaseManager.js"></script>
+    <script src="js/views/WorkLog.js"></script>
+    <script src="js/views/Progress.js"></script>
+    <script src="js/views/Reports.js"></script>
+    <script src="js/views/DataManager.js"></script>
+    <script src="js/views/Settings.js"></script>
+    <script src="js/utils/export.js"></script>
+    <script src="js/utils/template.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

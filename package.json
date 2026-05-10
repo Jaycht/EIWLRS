@@ -1,0 +1,65 @@
+{
+  "name": "eiwlrs",
+  "version": "1.2.0",
+  "description": "经侦工作日志登记系统（Economic Investigation Work Log Registration System）",
+  "author": "陈洪涛",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder --win --x64",
+    "build-portable": "electron-builder --win --x64 --config.portable=true",
+    "build-dir": "electron-builder --win --x64 --dir"
+  },
+  "build": {
+    "appId": "com.chenhongtao.eiwlrs",
+    "productName": "经侦工作日志登记系统",
+    "copyright": "© 版权所有 经侦工作日志登记系统 | 制作人：陈洪涛",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "**/*",
+      "!dist/**",
+      "!node_modules/**/*",
+      "node_modules/**/*",
+      "!package-lock.json",
+      "!*.md"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/icons/app.ico",
+      "artifactName": "${productName}_V${version}_Setup.${ext}",
+      "legalTrademarks": "© 版权所有 经侦工作日志登记系统 | 制作人：陈洪涛"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "经侦工作日志登记系统",
+      "installDir": "D:\\Program Files\\ECID",
+      "installDirIncludedFileDir": true,
+      "license": "LICENSE.txt",
+      "runAfterFinish": true,
+      "language": "2052",
+      "unicode": true
+    },
+    "extraMetadata": {
+      "maintainer": "陈洪涛",
+      "contact": "Jaycht@126.com"
+    }
+  },
+  "devDependencies": {
+    "electron": "^38.0.0-beta.6",
+    "electron-builder": "^25.0.0"
+  }
+}
